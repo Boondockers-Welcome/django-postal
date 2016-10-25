@@ -112,6 +112,9 @@ the field is required or not, e.g.::
 BUILD HISTORY
 =============
 
+0.9.7
+Fixed django 1.10 compatibility issues
+
 0.9.6
 Remove django-piston requirement
 Fixed django 1.7 compatibility issues
@@ -136,7 +139,8 @@ Git foo::
     $ source bin/activate
     $ python bootstrap.py
     $ bin/buildout -v
-    $ bin/django syncdb
+    $ bin/django makemigrations
+    $ bin/django migrate
     $ bin/django test postal
     $ bin/django runserver
 
