@@ -8,7 +8,7 @@ import sys
 from django.core.urlresolvers import NoReverseMatch
 from django.db.models import Model, permalink
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseServerError
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_text
 from django.views.debug import ExceptionReporter
 from django.views.decorators.vary import vary_on_headers
 from django.conf import settings
@@ -66,7 +66,7 @@ class Emitter(object):
         """
         Recursively serialize a lot of types, and
         in cases where it doesn't recognize the type,
-        it will fall back to Django's `smart_unicode`.
+        it will fall back to Django's `smart_text`.
 
         Returns `dict`.
         """
@@ -98,7 +98,7 @@ class Emitter(object):
             elif repr(thing).startswith("<django.db.models.fields.related.RelatedManager"):
                 ret = _any(thing.all())
             else:
-                ret = smart_unicode(thing, strings_only=True)
+                ret = smart_text(thing, strings_only=True)
 
             return ret
 
@@ -239,7 +239,7 @@ class Emitter(object):
 
                     try:
                         ret['resource_uri'] = permalink(lambda: (url_id, fields))()
-                    except NoReverseMatch, e:
+                    except NoReverseMatch as e:
                         pass
 
             if hasattr(data, 'get_api_url') and 'resource_uri' not in ret:
@@ -409,7 +409,7 @@ class Resource(object):
 
     def __init__(self, handler, authentication=None):
         if not callable(handler):
-            raise AttributeError, "Handler not callable."
+            raise AttributeError("Handler not callable.")
 
         self.handler = handler()
         self.csrf_exempt = getattr(self.handler, 'csrf_exempt', True)
@@ -540,7 +540,7 @@ class Resource(object):
 
         try:
             result = meth(request, *args, **kwargs)
-        except Exception, e:
+        except Exception as e:
             result = self.error_handler(e, request, meth, em_format)
 
         try:
@@ -586,7 +586,7 @@ class Resource(object):
             resp.streaming = self.stream
 
             return resp
-        except HttpStatusCode, e:
+        except HttpStatusCode as e:
             return e.response
 
     @staticmethod

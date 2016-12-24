@@ -20,7 +20,7 @@ setup(
     package_dir={'': 'src'},
     package_data={'': ['*.txt', '*.js', '*.html', '*.*', 'templates/postal/*.html']},
 
-    install_requires=['setuptools', 'django-countries'],
+    install_requires=['setuptools', 'django-countries', 'django-localflavor'],
 
     classifiers=[
         'Development Status :: 3 - Alpha',

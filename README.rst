@@ -41,18 +41,28 @@ Dependencies
 ============
 
 django-countries (http://pypi.python.org/pypi/django-countries)
+django-localflavor (http://pypi.python.org/pypi/django-localflavor)
 
 Usage
 =====
 
-1. Add django-countries and django-postal to your ``INSTALLED_APPS`` in ``settings.py``
+1. Add django-countries, django-localflavor and django-postal to your ``INSTALLED_APPS`` in ``settings.py``
 e.g.::
 
     INSTALLED_APPS = (
-        "countries",
+        "django_countries",
+        "localflavor",
         "postal",
         ...
         )
+
+2. Include the postal urls in your main ``urls.py`` file::
+
+    urlpatterns = [
+      # ...
+      url(r'^postal/', include('postal.urls')),
+      # ...
+    ]
 
 3. Add a ``postal_form`` to your templates::
 
@@ -77,7 +87,7 @@ e.g.::
 
 Changing the country in the form above should localise the address form.
 
-3. In your view code add code to save the addressform e.g.::
+4. In your view code add code to save the addressform e.g.::
 
     from postal.forms import PostalAddressForm
 
