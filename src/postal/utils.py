@@ -28,7 +28,7 @@ class RcFactory(object):
 
     def __getattr__(self, attr):
         """
-        Returns a fresh `HttpResponse` when getting 
+        Returns a fresh `HttpResponse` when getting
         an "attribute". This is backwards compatible
         with 0.2, which is important.
         """
@@ -39,29 +39,39 @@ class RcFactory(object):
 
         class HttpResponseWrapper(HttpResponse):
             """
-            Wrap HttpResponse and make sure that the internal _is_string 
-            flag is updated when the _set_content method (via the content 
+            Wrap HttpResponse and make sure that the internal _is_string
+            flag is updated when the _set_content method (via the content
             property) is called
             """
+
             def _set_content(self, content):
                 """
-                Set the _container and _is_string properties based on the 
+                Set the _container and _is_string properties based on the
                 type of the value parameter. This logic is in the construtor
-                for HttpResponse, but doesn't get repeated when setting 
+                for HttpResponse, but doesn't get repeated when setting
                 HttpResponse.content although this bug report (feature request)
-                suggests that it should: http://code.djangoproject.com/ticket/9403 
+                suggests that it should: http://code.djangoproject.com/ticket/9403
                 """
-                if not isinstance(content, basestring) and hasattr(content, '__iter__'):
+                if not isinstance(content, str) and hasattr(content, '__iter__'):
                     self._container = content
                     self._is_string = False
                 else:
-                    self._container = [content]
+                    self._container = [str.encode(content)]
                     self._is_string = True
 
-            content = property(HttpResponse._get_content, _set_content)            
+            try:
+                # Django version is older than 1.5
+                content = property(HttpResponse._get_content, _set_content)
+            except:
+                # Django version 1.5 or greater
+                @HttpResponse.content.setter
+                def content(self, content):
+                    print("Setting conttent to %s" % content)
+                    self._set_content(content)
 
         return HttpResponseWrapper(r, content_type='text/plain', status=c)
-    
+
+
 rc = RcFactory()
 
 

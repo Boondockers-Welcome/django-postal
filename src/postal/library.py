@@ -13,9 +13,12 @@ from postal.forms.nl.forms import NLPostalAddressForm
 from postal.forms.pl.forms import PLPostalAddressForm
 from postal.forms.ru.forms import RUPostalAddressForm
 from postal.forms.us.forms import USPostalAddressForm
+from postal.forms.ca.forms import CAPostalAddressForm
+from postal.forms.au.forms import AUPostalAddressForm
 
 # TODO: Auto-import these forms
 country_map = {
+    "ca": CAPostalAddressForm,
     "co": COPostalAddressForm,
     "cz": CZPostalAddressForm,
     "de": DEPostalAddressForm,
@@ -28,6 +31,7 @@ country_map = {
     "ru": RUPostalAddressForm,
     "us": USPostalAddressForm,
     "ar": ARPostalAddressForm,
+    "au": AUPostalAddressForm,
 }
 
 

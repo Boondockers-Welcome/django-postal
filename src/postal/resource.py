@@ -304,7 +304,7 @@ class Emitter(object):
         """
         Gets an emitter, returns the class and a content-type.
         """
-        if cls.EMITTERS.has_key(format):
+        if format in cls.EMITTERS:
             return cls.EMITTERS.get(format)
 
         raise ValueError("No emitters found for type %s" % format)
@@ -557,15 +557,15 @@ class Resource(object):
         status_code = 200
 
         # If we're looking at a response object which contains non-string
-        # content, then assume we should use the emitter to format that 
+        # content, then assume we should use the emitter to format that
         # content
         if isinstance(result, HttpResponse) and not result._is_string:
             status_code = result.status_code
             # Note: We can't use result.content here because that method attempts
-            # to convert the content into a string which we don't want. 
+            # to convert the content into a string which we don't want.
             # when _is_string is False _container is the raw data
             result = result._container
-     
+
         srl = emitter(result, typemapper, handler, fields, anonymous)
 
         try:
@@ -575,8 +575,10 @@ class Resource(object):
             before sending it to the client. Won't matter for
             smaller datasets, but larger will have an impact.
             """
-            if self.stream: stream = srl.stream_render(request)
-            else: stream = srl.render(request)
+            if self.stream:
+                stream = srl.stream_render(request)
+            else:
+                stream = srl.render(request)
 
             if not isinstance(stream, HttpResponse):
                 resp = HttpResponse(stream, mimetype=ct, status=status_code)

@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.utils.translation import ugettext
 from django import forms
+from importlib import reload
 
 from postal.library import form_factory
 import postal.settings
@@ -46,7 +47,7 @@ class PostalTests(TestCase):
         form = german_form_class(data=test_data)
 
         self.assertEqual(form.fields['line1'].label.lower(), "street")
-        self.assertEqual(form.fields.has_key('line2'), False)
+        self.assertEqual(('line2' in form.fields), False)
         self.assertEqual(form.fields['city'].label.lower(), "city")
         self.assertEqual(form.fields['code'].label.lower(), "zip code")
 

@@ -2,10 +2,15 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django_countries import data as country_data
 
-from postal.settings import POSTAL_ADDRESS_LINE1, POSTAL_ADDRESS_LINE2, POSTAL_ADDRESS_CITY, POSTAL_ADDRESS_STATE, \
-    POSTAL_ADDRESS_CODE
 
-country_list = [('', '-'*45)] + list(country_data.COUNTRIES.items())
+from postal.settings import POSTAL_ADDRESS_LINE1, POSTAL_ADDRESS_LINE2, POSTAL_ADDRESS_CITY, POSTAL_ADDRESS_STATE, \
+    POSTAL_ADDRESS_CODE, POSTAL_USE_CRISPY_FORMS
+
+if POSTAL_USE_CRISPY_FORMS:
+    from crispy_forms.helper import FormHelper
+    from crispy_forms.layout import Layout, Div
+
+country_list = sorted([('', '-'*45)] + list(country_data.COUNTRIES.items()))
 
 
 class PostalAddressForm(forms.Form):
@@ -15,6 +20,28 @@ class PostalAddressForm(forms.Form):
     state = forms.CharField(label=POSTAL_ADDRESS_STATE[0], required=POSTAL_ADDRESS_STATE[1], max_length=100)
     code = forms.CharField(label=POSTAL_ADDRESS_CODE[0], required=POSTAL_ADDRESS_CODE[1], max_length=100)
     country = forms.ChoiceField(label=_(u"Country"), choices=country_list)
+
+    def __init__(self, *args, **kwargs):
+        super(forms.Form, self).__init__(*args, **kwargs)
+        self.state = ''
+        if POSTAL_USE_CRISPY_FORMS:
+            css_id = 'postal_address'
+            if 'prefix' in kwargs:
+                css_id = kwargs['prefix'] + '-' + css_id
+            self.helper = FormHelper()
+            self.helper.form_tag = False
+            self.helper.layout = Layout(
+                Div(
+                    'line1',
+                    'line2'
+                    'city',
+                    'country',
+                    'state',
+                    'code',
+                    css_id=css_id,
+                    css_class='postal_address'
+                )
+            )
 
     def clean_country(self):
         data = self.cleaned_data['country']
