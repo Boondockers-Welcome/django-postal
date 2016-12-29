@@ -32,8 +32,8 @@ class PostalAddressForm(forms.Form):
             self.helper.layout = Layout(
                 Div(
                     'line1',
-                    'line2'
-                    'city',
+                    'line2',
+                    'city',                    
                     'country',
                     'state',
                     'code',

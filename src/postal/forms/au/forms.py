@@ -7,7 +7,7 @@ from postal.forms import PostalAddressForm
 
 class AUPostalAddressForm(PostalAddressForm):
     line1 = forms.CharField(label=_(u"Street"), max_length=50)
-    line2 = forms.CharField(label=_(u"Area"), required=False, max_length=100)
+    line2 = forms.CharField(label=_(u"Street (con\'t)"), required=False, max_length=100)
     city = forms.CharField(label=_(u"City"), max_length=50)
     state = forms.CharField(label=_(u"US State"), widget=AUStateSelect)
     code = AUPostCodeField(label=_(u"Zip Code"))
