@@ -23,7 +23,6 @@ class PostalAddressForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(forms.Form, self).__init__(*args, **kwargs)
-        self.state = ''
         if POSTAL_USE_CRISPY_FORMS:
             css_id = 'postal_address'
             if 'prefix' in kwargs:
