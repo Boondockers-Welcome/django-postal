@@ -31,10 +31,10 @@ class PostalAddressForm(forms.Form):
             self.helper.form_tag = False
             self.helper.layout = Layout(
                 Div(
+                    'country',
                     'line1',
                     'line2',
                     'city',                    
-                    'country',
                     'state',
                     'code',
                     css_id=css_id,
