@@ -8,9 +8,15 @@ from postal.settings import POSTAL_ADDRESS_LINE1, POSTAL_ADDRESS_LINE2, POSTAL_A
 
 if POSTAL_USE_CRISPY_FORMS:
     from crispy_forms.helper import FormHelper
-    from crispy_forms.layout import Layout, Div
+    from crispy_forms.layout import Layout, Div, Hidden
 
-country_list = sorted([('', '-'*45)] + list(country_data.COUNTRIES.items()))
+country_list = sorted([('', '-' * 45)] + list(country_data.COUNTRIES.items()))
+
+form_helpers = {}
+
+
+def register_postal_form_helper(form_id, form_helper):
+    form_helpers[form_id] = form_helper
 
 
 class PostalAddressForm(forms.Form):
@@ -22,25 +28,31 @@ class PostalAddressForm(forms.Form):
     country = forms.ChoiceField(label=_(u"Country"), choices=country_list)
 
     def __init__(self, *args, **kwargs):
-        super(forms.Form, self).__init__(*args, **kwargs)
+        prefix = kwargs.pop('prefix', None)
+        postal_form_id = kwargs.pop('postal_form_id', 'postal-address-form')
         if POSTAL_USE_CRISPY_FORMS:
             css_id = 'postal_address'
-            if 'prefix' in kwargs:
-                css_id = kwargs['prefix'] + '-' + css_id
-            self.helper = FormHelper()
+            if prefix is not None:
+                css_id = prefix + '-' + css_id
+            if postal_form_id in form_helpers:
+                self.helper = form_helpers[postal_form_id]
+            else:
+                self.helper = FormHelper()
             self.helper.form_tag = False
             self.helper.layout = Layout(
                 Div(
                     'country',
                     'line1',
                     'line2',
-                    'city',                    
+                    'city',
                     'state',
                     'code',
                     css_id=css_id,
                     css_class='postal_address'
-                )
+                ),
+                Hidden('postal-form-id', postal_form_id),
             )
+        super(PostalAddressForm, self).__init__(*args, **kwargs)
 
     def clean_country(self):
         data = self.cleaned_data['country']

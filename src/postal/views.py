@@ -17,6 +17,7 @@ def address_inline(request, prefix="", country_code=None, template_name="postal/
     if prefix:
         country_prefix = prefix + '-country'
     country_code = request.POST.get(country_prefix, country_code)
+    postal_form_id = request.POST.get('postal-form-id', 'postal-address-form')
 
     form_class = form_factory(country_code=country_code)
 
@@ -27,9 +28,9 @@ def address_inline(request, prefix="", country_code=None, template_name="postal/
                 data[key] = val
         data.update({country_prefix: country_code})
 
-        form = form_class(prefix=prefix, initial=data)
+        form = form_class(prefix=prefix, initial=data, postal_form_id=postal_form_id)
     else:
-        form = form_class(prefix=prefix)
+        form = form_class(prefix=prefix, postal_form_id=postal_form_id)
 
     return render_to_string(
         template_name,

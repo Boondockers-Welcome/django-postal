@@ -1,4 +1,3 @@
-from django import forms
 from postal import settings as postal_settings
 from postal.forms import PostalAddressForm
 from postal.forms.ar.forms import ARPostalAddressForm
