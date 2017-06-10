@@ -10,7 +10,12 @@ if POSTAL_USE_CRISPY_FORMS:
     from crispy_forms.helper import FormHelper
     from crispy_forms.layout import Layout, Div, Hidden
 
-country_list = sorted([('', '-' * 45)] + list(country_data.COUNTRIES.items()))
+
+def country_sort_key(country_data):
+    return country_data[1]
+
+
+country_list = sorted([('', '-' * 45)] + list(country_data.COUNTRIES.items()), key=country_sort_key)
 
 form_helpers = {}
 
