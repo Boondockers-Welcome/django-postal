@@ -12,6 +12,10 @@ if POSTAL_USE_CRISPY_FORMS:
 
 
 def country_sort_key(country_data):
+    if country_data[0] == 'US':
+        return 'AAA'
+    if country_data[0] == 'CA':
+        return 'AAAA'
     return country_data[1]
 
 
