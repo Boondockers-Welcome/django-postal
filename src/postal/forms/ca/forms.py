@@ -7,8 +7,8 @@ from postal.forms import PostalAddressForm
 
 
 class CAPostalAddressForm(PostalAddressForm):
-    line1 = forms.CharField(label=_(u"Street"), max_length=50)
-    line2 = forms.CharField(label=_(u"Street (con\'t)"), required=False, max_length=100)
+    line1 = forms.CharField(label=_(u"Street Address"), max_length=50)
+    line2 = forms.CharField(label=_(u"Street Address (con\'t)"), required=False, max_length=100)
     city = forms.CharField(label=_(u"City"), max_length=50)
     state = CAProvinceField(label=_(u"Province"), widget=CAProvinceSelect)
     code = CAPostalCodeField(label=_(u"Postal Code"))
