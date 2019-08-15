@@ -21,6 +21,17 @@
             var form = $(this).closest('form');
             change_form(form, holder);
         });
+
+        window.addEventListener( "pageshow", function ( event ) {
+          var historyTraversal = event.persisted ||
+                                 ( typeof window.performance != "undefined" &&
+                                      window.performance.navigation.type === 2 );
+          if ( historyTraversal ) {
+            var holder = $(country_selector).closest('div.postal_address');
+            var form = $(country_selector).closest('form');
+            change_form(form, holder);
+          }
+        });
     }
 })(jQuery);
 </script>
