@@ -5,7 +5,7 @@ import decimal
 import inspect
 import re
 import sys
-from django.core.urlresolvers import NoReverseMatch
+from django.urls import NoReverseMatch
 from django.db.models import Model, permalink
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseServerError
 from django.utils.encoding import smart_text
