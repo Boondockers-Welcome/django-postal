@@ -5,8 +5,8 @@ import decimal
 import inspect
 import re
 import sys
-from django.urls import NoReverseMatch
-from django.db.models import Model, permalink
+from django.urls import NoReverseMatch, reverse
+from django.db.models import Model
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseServerError
 from django.utils.encoding import smart_text
 from django.views.debug import ExceptionReporter
@@ -238,7 +238,7 @@ class Emitter(object):
                     url_id, fields = handler.resource_uri(data)
 
                     try:
-                        ret['resource_uri'] = permalink(lambda: (url_id, fields))()
+                        ret['resource_uri'] = reverse(lambda: (url_id, fields))()
                     except NoReverseMatch as e:
                         pass
 
