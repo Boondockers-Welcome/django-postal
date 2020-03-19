@@ -238,7 +238,7 @@ class Emitter(object):
                     url_id, fields = handler.resource_uri(data)
 
                     try:
-                        ret['resource_uri'] = reverse(lambda: (url_id, fields))()
+                        ret['resource_uri'] = reverse(url_id, fields)
                     except NoReverseMatch as e:
                         pass
 
