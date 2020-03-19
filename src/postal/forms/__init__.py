@@ -61,7 +61,7 @@ class PostalAddressForm(forms.Form):
                 ),
                 Hidden('postal-form-id', postal_form_id),
             )
-        super(PostalAddressForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean_country(self):
         data = self.cleaned_data['country']
